@@ -1,4 +1,4 @@
-package com.softvision.botanica.activities;
+package com.softvision.botanica.ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,11 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.softvision.botanica.R;
-import com.softvision.botanica.fragments.NavigationDrawerFragment;
-import com.softvision.botanica.utils.injection.InjectLayout;
-import com.softvision.botanica.utils.injection.Injector;
+import com.softvision.botanica.ui.fragments.NavigationDrawerFragment;
 
-@InjectLayout(R.layout.activity_main)
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
@@ -35,7 +32,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Injector.setupActivity(this);
+        setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -59,13 +56,10 @@ public class MainActivity extends ActionBarActivity
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
-                mTitle = getString(R.string.title_section1);
+                mTitle = getString(R.string.search_section);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.add_section);
                 break;
         }
     }

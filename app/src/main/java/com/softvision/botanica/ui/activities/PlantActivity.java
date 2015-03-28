@@ -1,4 +1,4 @@
-package com.softvision.botanica.activities;
+package com.softvision.botanica.ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;

@@ -17,8 +17,7 @@ public class Injector {
     }
 
     public static View setupFragment(Object fragment, LayoutInflater inflater, ViewGroup container) {
-        InjectLayout layoutAnnotation = fragment.getClass().getAnnotation(InjectLayout.class);
-        View rootView = inflater.inflate(layoutAnnotation.value(), container, false);
+        View rootView = inflater.inflate(getLayoutResource(fragment), container, false);
         Injector.attachAnnotatedViews(fragment, rootView);
         return rootView;
     }
