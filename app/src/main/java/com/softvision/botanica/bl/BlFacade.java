@@ -2,11 +2,8 @@ package com.softvision.botanica.bl;
 
 import android.content.Context;
 
-import com.softvision.botanica.bl.persist.PersistantUtils;
 import com.softvision.botanica.common.err.ApiException;
 import com.softvision.botanica.common.pojo.out.InfoOutputPOJO;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.

@@ -12,8 +12,6 @@ import com.softvision.botanica.common.pojo.in.InfoInputPOJO;
 import com.softvision.botanica.common.pojo.out.InfoOutputPOJO;
 import com.softvision.botanica.common.util.NetworkConnectivity;
 
-import java.io.IOException;
-
 
 /**
  * Created with IntelliJ IDEA.

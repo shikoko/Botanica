@@ -15,4 +15,5 @@
     <string name="device_has_no_internet_connectivity_title">No connectivity</string>
     <string name="device_has_no_internet_connectivity_text">Your device has no internet connectivity</string>
     <string name="ok">Ok</string>
+    <string name="action_settings">Settings</string>
 </resources>
