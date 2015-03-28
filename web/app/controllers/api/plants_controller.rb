@@ -2,7 +2,8 @@ class API::PlantsController < ApplicationController
   def create
     plants = Plant.all
 
-    plants = plants.joins('LEFT JOIN locations ON locations.plant_id = plants.id')
+    plants = plants.eager_load(:locations)
+    plants = plants.eager_load(locations: :pictures)
 
     query_string = query_string_from_params!
     location = location_from_params!
