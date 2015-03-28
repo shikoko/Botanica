@@ -43,7 +43,7 @@ public class PlantListItemView extends LinearLayout {
     public void setData(PlantPOJO item) {
         image.reset();
         image.setUrl(item.getPicture());
-        title.setText(getResources().getString(R.string.title_format, item.getName(), item.getBothanical()));
+        title.setText(getResources().getString(R.string.title_format, item.getName(), item.getBothanicalName()));
         text.setText(item.getDescription());
     }
 }

@@ -19,13 +19,16 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
     public static final String PLANT_KEY = "plant_key";
 
     private PlantPOJO plant;
-    private String[] descriptions;
 
     private MapView mapView;
     private GoogleMap map;
 
     private TextView plantName;
     private TextView plantDescription;
+
+    private TextView plantUses;
+    private TextView plantParts;
+
     private TileImageView plantImage;
 
     @Override
@@ -35,6 +38,8 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
 
         plantName = (TextView) findViewById(R.id.plant_name);
         plantDescription = (TextView) findViewById(R.id.plant_description);
+        plantUses = (TextView) findViewById(R.id.plant_properties);
+        plantParts = (TextView) findViewById(R.id.plant_parts);
         plantImage = (TileImageView) findViewById(R.id.plant_image);
 
         extractFromIntent(getIntent());
@@ -68,9 +73,15 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
     }
 
     private void populateUi() {
-        splitDescription();
         plantImage.setUrl(plant.getPicture());
-        plantName.setText(plant.getName());
+        plantName.setText(plant.getName() + "(" + plant.getBothanicalName() + ")");
+        splitDescription();
+        splitParts();
+        splitUses();
+    }
+
+    private void splitDescription() {
+        String[] descriptions = plant.getDescription().split("-");
         for (int i = 1; i < descriptions.length; i++) {
             plantDescription.append("- ");
             plantDescription.append(descriptions[i]);
@@ -78,8 +89,22 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
         }
     }
 
-    private void splitDescription() {
-        descriptions = plant.getDescription().split("-");
+    private void splitParts() {
+        String[] parts = plant.getParts().split("-");
+        for (int i = 1; i < parts.length; i++) {
+            plantParts.append("- ");
+            plantParts.append(parts[i]);
+            plantParts.append("\n");
+        }
+    }
+
+    private void splitUses() {
+        String[] uses = plant.getUses().split("-");
+        for (int i = 1; i < uses.length; i++) {
+            plantUses.append("- ");
+            plantUses.append(uses[i]);
+            plantUses.append("\n");
+        }
     }
 
     @Override
@@ -111,20 +136,4 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
 
     }
 
-//    private void setUpMapIfNeeded() {
-//        Do a null check to confirm that we have not already instantiated the map.
-//        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-//            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-//                    .getMap();
-            // Check if we were successful in obtaining the map.
-//            if (mMap != null) {
-//                setUpMap();
-//            }
-//        }
-//    }
-
-//    private void setUpMap() {
-//        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
-//    }
 }

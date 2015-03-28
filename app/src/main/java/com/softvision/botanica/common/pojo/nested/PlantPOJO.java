@@ -46,7 +46,7 @@ public class PlantPOJO {
         return picture;
     }
 
-    public String getBothanical() {
+    public String getBothanicalName() {
         return bothanical;
     }
 

@@ -19,5 +19,7 @@
     <string name="ok">Ok</string>
     <string name="action_settings">Settings</string>
     <string name="title_format">%1$s (%2$s)</string>
-    <string name="description">Description</string>
+    <string name="description">Descriere</string>
+    <string name="plant_properties">Proprietati / Utilizare</string>
+    <string name="plant_parts">Partile folosite</string>
 </resources>
