@@ -4,14 +4,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.MotionEvent;
-import android.view.View;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -22,6 +20,7 @@ import com.softvision.botanica.common.pojo.nested.PlantPOJO;
 import com.softvision.botanica.common.pojo.util.BundlePojoConverter;
 import com.softvision.botanica.common.util.GeoLocationUtils;
 import com.softvision.botanica.ui.BotanicaActivity;
+import com.softvision.botanica.ui.views.custom.CustomMapView;
 import com.softvision.botanica.ui.views.custom.TileImageView;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
 
     private PlantPOJO plant;
 
-    private MapView mapView;
+    private CustomMapView mapView;
     private GoogleMap map;
 
     private TextView plantName;
@@ -72,7 +71,7 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
     }
 
     private void setUpMap(Bundle savedInstanceState) {
-        mapView = (MapView) findViewById(R.id.map);
+        mapView = (CustomMapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         map = mapView.getMap();
         if (map != null) {
@@ -80,32 +79,6 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
             map.setLocationSource(this);
         }
 
-        mapView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        mapView.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        mapView.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-
-                // Handle MapView's touch events.
-                return true;
-            }
-        });
-
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        return super.dispatchTouchEvent(ev);
     }
 
     @Override
