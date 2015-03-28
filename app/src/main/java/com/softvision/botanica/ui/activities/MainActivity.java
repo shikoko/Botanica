@@ -61,6 +61,7 @@ public class MainActivity extends BotanicaActivity
     private View searchResultListContainer;
     private View tileContainer;
     private View listSpinner;
+    private boolean tilesHidden;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +122,7 @@ public class MainActivity extends BotanicaActivity
                 super.onPostExecute(result);
 
                 if(isSuccess()) {
-                    lastSearchResult = result;
+                    lastResult = result;
                     int count = Math.min(result.getPlants().size(), flipImgs.size());
                     for (int i = 0; i < count; i++) {
                         flipImgs.get(i).setUrl(result.getPlants().get(i).getPicture());
@@ -141,8 +142,7 @@ public class MainActivity extends BotanicaActivity
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                tileContainer.setVisibility(View.GONE);
-                searchResultListContainer.setVisibility(View.VISIBLE);
+                hideTiles();
                 listSpinner.setVisibility(View.VISIBLE);
                 searchResultList.setVisibility(View.GONE);
             }
@@ -187,6 +187,23 @@ public class MainActivity extends BotanicaActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
+
+        restoreTiles();
+    }
+
+    private void hideTiles() {
+        tilesHidden = true;
+        tileContainer.setVisibility(View.GONE);
+        searchResultListContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void restoreTiles() {
+        if(tilesHidden) {
+            tilesHidden = false;
+            tileContainer.setVisibility(View.VISIBLE);
+            searchResultListContainer.setVisibility(View.GONE);
+            BotanicaApplication.getMainHandler().postDelayed(randomRunnable, RANDOM_DELAY);
+        }
     }
 
     public void onSectionAttached(int number) {
@@ -284,7 +301,7 @@ public class MainActivity extends BotanicaActivity
     private class RandomPlantRunnable implements Runnable {
         @Override
         public void run() {
-            if(isVisible() &&!isFinishing() && lastResult != null) {
+            if(!tilesHidden  &&isVisible() &&!isFinishing() && lastResult != null) {
                 int plantIndex = random.nextInt(lastResult.getPlants().size());
                 int viewIndex = random.nextInt(flipImgs.size());
                 flipImgs.get(viewIndex).setUrl(lastResult.getPlants().get(plantIndex).getPicture());
