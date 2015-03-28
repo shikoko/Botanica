@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Botanica</string>
 
+    <string name="invalid_email_title">Invalid email</string>
+    <string name="invalid_email_warning">We\'re sorry but this doesn\'t look like a valid email address.</string>
 
     <string name="search_section">Search plant</string>
     <string name="add_section">Add plant</string>
