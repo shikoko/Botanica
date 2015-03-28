@@ -29,6 +29,8 @@ public class TileImageView extends RelativeLayout {
     private static ImageLoaderThread imageLoaderThread;
     private ImageView imageView;
     private View progressBarContainer;
+    private Runnable lastLoadRunnable;
+    private Runnable lastResultRunnable;
 
     public TileImageView(Context context) {
         super(context);
@@ -62,26 +64,34 @@ public class TileImageView extends RelativeLayout {
     }
 
     public void setUrl(final String imageHttpUrl) {
-        imageLoaderThread.handler.post(new Runnable() {
+        if(lastLoadRunnable != null) {
+            imageLoaderThread.handler.removeCallbacks(lastLoadRunnable);
+        }
+        if(lastResultRunnable != null) {
+            BotanicaApplication.getMainHandler().removeCallbacks(lastResultRunnable);
+        }
+        lastLoadRunnable = new Runnable() {
             @Override
             public void run() {
                 URL url = null;
                 try {
                     url = new URL(imageHttpUrl);
                     final Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                    BotanicaApplication.getMainHandler().post(new Runnable() {
+                    lastResultRunnable = new Runnable() {
                         @Override
                         public void run() {
                             setBitmap(bmp);
                         }
-                    });
+                    };
+                    BotanicaApplication.getMainHandler().post(lastResultRunnable);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        };
+        imageLoaderThread.handler.post(lastLoadRunnable);
     }
 
     private void setBitmap(final Bitmap bmp) {
@@ -94,6 +104,11 @@ public class TileImageView extends RelativeLayout {
                 AnimationUtils.create().rotateY(TileImageView.this, ANIMATION_DURATION, 270, 360).start();
             }
         }).start();
+    }
+
+    public void reset() {
+        imageView.setVisibility(GONE);
+        progressBarContainer.setVisibility(VISIBLE);
     }
 
     private static class ImageLoaderThread extends Thread {

@@ -7,11 +7,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.softvision.botanica.BotanicaApplication;
 import com.softvision.botanica.R;
@@ -19,8 +25,10 @@ import com.softvision.botanica.common.pojo.nested.PlantPOJO;
 import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
 import com.softvision.botanica.common.pojo.util.BundlePojoConverter;
 import com.softvision.botanica.ui.BotanicaActivity;
+import com.softvision.botanica.ui.adapters.SearchResultListAdapter;
 import com.softvision.botanica.ui.async.QueryPlantsTask;
 import com.softvision.botanica.ui.fragments.NavigationDrawerFragment;
+import com.softvision.botanica.ui.utils.UiUtils;
 import com.softvision.botanica.ui.views.custom.TileImageView;
 
 import java.util.ArrayList;
@@ -28,7 +36,7 @@ import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends BotanicaActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, View.OnClickListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, View.OnClickListener, AdapterView.OnItemClickListener {
     private static final long RANDOM_DELAY = 4000;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -42,17 +50,52 @@ public class MainActivity extends BotanicaActivity
     private List<TileImageView> flipImgs = new ArrayList<>();
 
     private QueryOutputPOJO lastResult;
+    private QueryOutputPOJO lastSearchResult;
+
     private Runnable randomRunnable = new RandomPlantRunnable();
     private Random random = new Random();
+    private EditText searchField;
+
+    private ListView searchResultList;
+    private SearchResultListAdapter searchResultListAdapter;
+    private View searchResultListContainer;
+    private View tileContainer;
+    private View listSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        UiUtils.hideVirtualKeyboard(getBaseContext(), searchField);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+
+        searchField = (EditText)findViewById(R.id.search_input);
+        findViewById(R.id.search_button).setOnClickListener(this);
+
+
+        searchResultListContainer = findViewById(R.id.list_container);
+        tileContainer = findViewById(R.id.tile_container);
+        listSpinner = findViewById(R.id.loading_list);
+
+
+        searchResultList = (ListView)findViewById(R.id.result_list);
+        searchResultListAdapter = new SearchResultListAdapter();
+        searchResultList.setAdapter(searchResultListAdapter);
+        searchResultList.setOnItemClickListener(this);
+
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch(searchField.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -76,8 +119,9 @@ public class MainActivity extends BotanicaActivity
             @Override
             protected void onPostExecute(QueryOutputPOJO result) {
                 super.onPostExecute(result);
+
                 if(isSuccess()) {
-                    lastResult = result;
+                    lastSearchResult = result;
                     int count = Math.min(result.getPlants().size(), flipImgs.size());
                     for (int i = 0; i < count; i++) {
                         flipImgs.get(i).setUrl(result.getPlants().get(i).getPicture());
@@ -86,17 +130,54 @@ public class MainActivity extends BotanicaActivity
                     BotanicaApplication.getMainHandler().postDelayed(randomRunnable, RANDOM_DELAY);
                 }
             }
+
+        }.execute();
+    }
+
+    private void performSearch(String searchTerm) {
+        UiUtils.hideVirtualKeyboard(getBaseContext(), searchField);
+
+        new QueryPlantsTask(searchTerm , 10) {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                tileContainer.setVisibility(View.GONE);
+                searchResultListContainer.setVisibility(View.VISIBLE);
+                listSpinner.setVisibility(View.VISIBLE);
+                searchResultList.setVisibility(View.GONE);
+            }
+
+            @Override
+            protected void onPostExecute(QueryOutputPOJO result) {
+                super.onPostExecute(result);
+                if(isSuccess()) {
+                    lastSearchResult = result;
+                    searchResultListAdapter.setLastSearchResult(lastSearchResult);
+                    listSpinner.setVisibility(View.GONE);
+                    searchResultList.setVisibility(View.VISIBLE);
+                }
+            }
         }.execute();
     }
 
     @Override
     public void onClick(View v) {
-        PlantPOJO plant = (PlantPOJO) v.getTag(R.id.plant_object_tag_key);
-        if(plant != null) {
-            Intent intent = new Intent(this, PlantActivity.class);
-            intent.putExtra(PlantActivity.PLANT_KEY, BundlePojoConverter.pojo2Bundle(plant));
-            startActivity(intent);
+        switch (v.getId()) {
+            case R.id.search_button:
+                performSearch(searchField.getText().toString());
+                break;
+            default:
+                PlantPOJO plant = (PlantPOJO) v.getTag(R.id.plant_object_tag_key);
+                if(plant != null) {
+                    goToDetails(plant);
+                }
         }
+    }
+
+    private void goToDetails(PlantPOJO plantPOJO) {
+        Intent intent = new Intent(this, PlantActivity.class);
+        intent.putExtra(PlantActivity.PLANT_KEY, BundlePojoConverter.pojo2Bundle(plantPOJO));
+        startActivity(intent);
     }
 
     @Override
@@ -153,6 +234,11 @@ public class MainActivity extends BotanicaActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        goToDetails(lastSearchResult.getPlants().get(position));
     }
 
     /**

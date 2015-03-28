@@ -10,6 +10,15 @@ public class PlantPOJO {
     @Bundled(key = "name")
     private String name;
 
+    @Bundled(key = "bothanical")
+    private String bothanical;
+
+    @Bundled(key = "uses")
+    private String uses;
+
+    @Bundled(key = "parts")
+    private String parts;
+
     @Bundled(key = "description")
     private String description;
 
@@ -35,5 +44,17 @@ public class PlantPOJO {
 
     public String getPicture() {
         return picture;
+    }
+
+    public String getBothanical() {
+        return bothanical;
+    }
+
+    public String getUses() {
+        return uses;
+    }
+
+    public String getParts() {
+        return parts;
     }
 }

@@ -13,8 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.softvision.botanica.R;
+import com.softvision.botanica.bl.BusinessLogic;
 import com.softvision.botanica.ui.BotanicaActivity;
 import com.softvision.botanica.ui.utils.UiUtils;
+import com.softvision.botanica.ui.utils.ValidationUtils;
 import com.softvision.botanica.utils.StringUtils;
 import com.softvision.botanica.utils.injection.AttachClick;
 import com.softvision.botanica.utils.injection.InjectLayout;
@@ -55,24 +57,28 @@ public class LoginActivity extends BotanicaActivity {
                 return true;
             }
         });
+
+        if(BusinessLogic.getFacade().isLoggedIn()) {
+            advance();
+        }
     }
 
     // used by injection mechanims
     @SuppressWarnings("UnusedDeclaration")
     @AttachClick(R.id.login_button)
     public void handleOnClick() {
-//        advance();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    private void advance() {
-        if (validEmail(emailEditView.getText().toString())) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+        if (ValidationUtils.isValidEmailAdress(emailEditView.getText().toString())) {
+            BusinessLogic.getFacade().setUserEmail(emailEditView.getText().toString());
+            advance();
         } else {
             UiUtils.showAcknowledgeDialog(this, getResources().getString(R.string.invalid_email_title), getResources().getString(R.string.invalid_email_warning));
         }
+    }
+
+    private void advance() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+
     }
 
     @Override
@@ -95,13 +101,5 @@ public class LoginActivity extends BotanicaActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private boolean validEmail(String email) {
-        if (StringUtils.hasContent(email)) {
-            Pattern pattern = Patterns.EMAIL_ADDRESS;
-            return pattern.matcher(email).matches();
-        }
-        return false;
     }
 }
