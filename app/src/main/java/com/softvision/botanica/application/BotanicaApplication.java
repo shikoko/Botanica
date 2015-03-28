@@ -1,4 +1,6 @@
 package com.softvision.botanica.application;
 
-public class BotanicaApplication {
+import android.app.Application;
+
+public class BotanicaApplication extends Application {
 }
