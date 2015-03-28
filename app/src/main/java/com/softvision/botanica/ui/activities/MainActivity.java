@@ -13,12 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.softvision.botanica.R;
 import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
 import com.softvision.botanica.ui.BotanicaActivity;
 import com.softvision.botanica.ui.async.QueryPlantsTask;
 import com.softvision.botanica.ui.fragments.NavigationDrawerFragment;
+import com.softvision.botanica.ui.views.custom.TileImageView;
 
 public class MainActivity extends BotanicaActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, View.OnClickListener {
@@ -34,6 +36,7 @@ public class MainActivity extends BotanicaActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private TileImageView flipImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,9 @@ public class MainActivity extends BotanicaActivity
 
         button = (Button) findViewById(R.id.button_main);
         button.setOnClickListener(this);
+
+        flipImg = (TileImageView) findViewById(R.id.flip_img);
+        flipImg.setUrl("http://upload.wikimedia.org/wikipedia/commons/b/bf/GOES-13_First_Image_jun_22_2006_1730Z.jpg");
     }
 
     @Override
