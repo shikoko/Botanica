@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -72,11 +74,21 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
     private void setUpMap(Bundle savedInstanceState) {
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-        map = ((MapView) findViewById(R.id.map)).getMap();
+        MapView mapView1 = (MapView) findViewById(R.id.map);
+        map = mapView1.getMap();
         if (map != null) {
             map.setMyLocationEnabled(true);
             map.setLocationSource(this);
         }
+
+        mapView1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of  child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
     }
 
     @Override
