@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.softvision.botanica.BotanicaApplication;
 import com.softvision.botanica.ui.BotanicaActivity;
 import com.softvision.botanica.ui.fragments.BotanicaAckDialogFragment;
 
@@ -159,5 +160,9 @@ public class UiUtils {
             int mins = (str.contains("hour") ? 60 : 60 * 24);
             return mins * Integer.parseInt(str.substring(0, str.indexOf(" ")));
         }
+    }
+
+    public static int getPx(int dp) {
+        return (int) (dp * BotanicaApplication.getContext().getResources().getDisplayMetrics().density);
     }
 }
