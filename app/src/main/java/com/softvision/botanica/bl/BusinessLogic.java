@@ -74,6 +74,11 @@ public class BusinessLogic implements BlFacade {
     }
 
     @Override
+    public void setUserEmail(String email) {
+        PersistantUtils.setLoginInfo(mContext, email);
+    }
+
+    @Override
     public boolean isLoggedIn() {
         return PersistantUtils.isLoggedIn(mContext);
     }

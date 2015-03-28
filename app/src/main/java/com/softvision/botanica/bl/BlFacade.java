@@ -28,6 +28,6 @@ public interface BlFacade {
     //*****************************************************************************************MISCELLANEOUS STUFF
 
     public String getUserEmail();
-
+    public void setUserEmail(String email);
     public boolean isLoggedIn();
 }
