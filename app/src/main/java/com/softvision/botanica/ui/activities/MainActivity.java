@@ -13,10 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.softvision.botanica.BotanicaApplication;
 import com.softvision.botanica.R;
-import com.softvision.botanica.common.pojo.nested.PlantImagePOJO;
 import com.softvision.botanica.common.pojo.nested.PlantPOJO;
 import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
+import com.softvision.botanica.common.pojo.util.BundlePojoConverter;
 import com.softvision.botanica.ui.BotanicaActivity;
 import com.softvision.botanica.ui.async.QueryPlantsTask;
 import com.softvision.botanica.ui.fragments.NavigationDrawerFragment;
@@ -24,9 +25,11 @@ import com.softvision.botanica.ui.views.custom.TileImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends BotanicaActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, View.OnClickListener {
+    private static final long RANDOM_DELAY = 4000;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -37,6 +40,10 @@ public class MainActivity extends BotanicaActivity
      */
     private CharSequence mTitle;
     private List<TileImageView> flipImgs = new ArrayList<>();
+
+    private QueryOutputPOJO lastResult;
+    private Runnable randomRunnable = new RandomPlantRunnable();
+    private Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,23 +68,35 @@ public class MainActivity extends BotanicaActivity
         flipImgs.add((TileImageView) findViewById(R.id.image_3_1));
         flipImgs.add((TileImageView) findViewById(R.id.image_3_2));
         flipImgs.add((TileImageView) findViewById(R.id.image_3_3));
+        for (TileImageView flipImg : flipImgs) {
+            flipImg.setOnClickListener(this);
+        }
 
-        new QueryPlantsTask("" , 9) {
+        new QueryPlantsTask("" , 60) {
             @Override
             protected void onPostExecute(QueryOutputPOJO result) {
-                int count = Math.min(result.getPlants().size(), flipImgs.size());
-                for (int i = 0; i < count; i++) {
-                    flipImgs.get(i).setUrl(result.getPlants().get(i).getPicture());
+                super.onPostExecute(result);
+                if(isSuccess()) {
+                    lastResult = result;
+                    int count = Math.min(result.getPlants().size(), flipImgs.size());
+                    for (int i = 0; i < count; i++) {
+                        flipImgs.get(i).setUrl(result.getPlants().get(i).getPicture());
+                        flipImgs.get(i).setTag(R.id.plant_object_tag_key, result.getPlants().get(i));
+                    }
+                    BotanicaApplication.getMainHandler().postDelayed(randomRunnable, RANDOM_DELAY);
                 }
             }
         }.execute();
-
     }
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(this, PlantActivity.class);
-        startActivity(intent);
+        PlantPOJO plant = (PlantPOJO) v.getTag(R.id.plant_object_tag_key);
+        if(plant != null) {
+            Intent intent = new Intent(this, PlantActivity.class);
+            intent.putExtra(PlantActivity.PLANT_KEY, BundlePojoConverter.pojo2Bundle(plant));
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -173,6 +192,19 @@ public class MainActivity extends BotanicaActivity
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+        }
+    }
+
+    private class RandomPlantRunnable implements Runnable {
+        @Override
+        public void run() {
+            if(isVisible() &&!isFinishing() && lastResult != null) {
+                int plantIndex = random.nextInt(lastResult.getPlants().size());
+                int viewIndex = random.nextInt(flipImgs.size());
+                flipImgs.get(viewIndex).setUrl(lastResult.getPlants().get(plantIndex).getPicture());
+                flipImgs.get(viewIndex).setTag(R.id.plant_object_tag_key, lastResult.getPlants().get(plantIndex));
+                BotanicaApplication.getMainHandler().postDelayed(this, RANDOM_DELAY);
+            }
         }
     }
 }
