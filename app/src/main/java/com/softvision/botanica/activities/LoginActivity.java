@@ -1,9 +1,11 @@
-package com.softvision.botanica;
+package com.softvision.botanica.activities;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.softvision.botanica.R;
 
 
 public class LoginActivity extends ActionBarActivity {
