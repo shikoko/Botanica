@@ -5,7 +5,9 @@ import java.util.List;
 public class PlantPOJO {
     private String name;
     private String description;
+    private String picture;
     private List<PlantLocationPOJO> locations;
+
 
     public String getName() {
         return name;
@@ -17,5 +19,9 @@ public class PlantPOJO {
 
     public List<PlantLocationPOJO> getLocations() {
         return locations;
+    }
+
+    public String getPicture() {
+        return picture;
     }
 }

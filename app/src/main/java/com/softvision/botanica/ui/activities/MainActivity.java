@@ -12,21 +12,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import com.softvision.botanica.R;
+import com.softvision.botanica.common.pojo.nested.PlantImagePOJO;
+import com.softvision.botanica.common.pojo.nested.PlantPOJO;
 import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
 import com.softvision.botanica.ui.BotanicaActivity;
 import com.softvision.botanica.ui.async.QueryPlantsTask;
 import com.softvision.botanica.ui.fragments.NavigationDrawerFragment;
 import com.softvision.botanica.ui.views.custom.TileImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends BotanicaActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, View.OnClickListener {
-
-    private Button button;
-
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -36,7 +36,7 @@ public class MainActivity extends BotanicaActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-    private TileImageView flipImg;
+    private List<TileImageView> flipImgs = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +52,26 @@ public class MainActivity extends BotanicaActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+        flipImgs.add((TileImageView) findViewById(R.id.image_1_1));
+        flipImgs.add((TileImageView) findViewById(R.id.image_1_2));
+        flipImgs.add((TileImageView) findViewById(R.id.image_1_3));
+        flipImgs.add((TileImageView) findViewById(R.id.image_2_1));
+        flipImgs.add((TileImageView) findViewById(R.id.image_2_2));
+        flipImgs.add((TileImageView) findViewById(R.id.image_2_3));
+        flipImgs.add((TileImageView) findViewById(R.id.image_3_1));
+        flipImgs.add((TileImageView) findViewById(R.id.image_3_2));
+        flipImgs.add((TileImageView) findViewById(R.id.image_3_3));
+
         new QueryPlantsTask("" , 9) {
             @Override
-            protected void onPostExecute(QueryOutputPOJO r) {
-                System.out.println(r);
+            protected void onPostExecute(QueryOutputPOJO result) {
+                int count = Math.min(result.getPlants().size(), flipImgs.size());
+                for (int i = 0; i < count; i++) {
+                    flipImgs.get(i).setUrl(result.getPlants().get(i).getPicture());
+                }
             }
         }.execute();
 
-        button = (Button) findViewById(R.id.button_main);
-        button.setOnClickListener(this);
-
-        flipImg = (TileImageView) findViewById(R.id.flip_img);
-        flipImg.setUrl("http://www.online-image-editor.com//styles/2014/images/example_image.png");
     }
 
     @Override

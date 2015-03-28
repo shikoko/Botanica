@@ -6,7 +6,7 @@ public class PlantLocationPOJO {
     private double lat;
     private double lng;
     private String description;
-    private List<PlantImagePOJO> location_images;
+    private List<PlantImagePOJO> pictures;
 
     public double getLat() {
         return lat;
@@ -20,7 +20,7 @@ public class PlantLocationPOJO {
         return description;
     }
 
-    public List<PlantImagePOJO> getLocation_images() {
-        return location_images;
+    public List<PlantImagePOJO> getLocationImages() {
+        return pictures;
     }
 }

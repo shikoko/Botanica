@@ -1,9 +1,5 @@
 package com.softvision.botanica.ui.views.custom;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,7 +15,6 @@ import android.widget.RelativeLayout;
 import com.softvision.botanica.BotanicaApplication;
 import com.softvision.botanica.R;
 import com.softvision.botanica.ui.utils.AnimationUtils;
-import com.softvision.botanica.ui.utils.FlipAnimator;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -29,7 +24,7 @@ import java.net.URL;
  * Created by lorand.krucz on 3/28/2015.
  */
 public class TileImageView extends RelativeLayout {
-    private static final long ANIMATION_DURATION = 500;
+    private static final long ANIMATION_DURATION = 300;
 
     private static ImageLoaderThread imageLoaderThread;
     private ImageView imageView;
