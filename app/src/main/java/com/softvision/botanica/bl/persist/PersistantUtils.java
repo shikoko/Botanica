@@ -15,7 +15,7 @@ public class PersistantUtils {
 
     public static String getUserEmail(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SETTINGS_SHARED_PREFS, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(USER_EMAIL, "anonimus@yahoo.com");
+        return sharedPreferences.getString(USER_EMAIL, "test@yahoo.com");
     }
 
     public static void setLoginInfo(Context context, String email) {

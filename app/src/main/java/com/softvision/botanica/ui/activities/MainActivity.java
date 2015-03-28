@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.softvision.botanica.BotanicaApplication;
 import com.softvision.botanica.R;
+import com.softvision.botanica.bl.BusinessLogic;
 import com.softvision.botanica.common.pojo.nested.PlantPOJO;
 import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
 import com.softvision.botanica.common.pojo.util.BundlePojoConverter;
@@ -55,6 +56,7 @@ public class MainActivity extends BotanicaActivity
     private Runnable randomRunnable = new RandomPlantRunnable();
     private Random random = new Random();
     private EditText searchField;
+    private TextView userNameField;
 
     private ListView searchResultList;
     private SearchResultListAdapter searchResultListAdapter;
@@ -76,7 +78,8 @@ public class MainActivity extends BotanicaActivity
 
         searchField = (EditText)findViewById(R.id.search_input);
         findViewById(R.id.search_button).setOnClickListener(this);
-
+        userNameField = (TextView) findViewById(R.id.user_name);
+        userNameField.setText(BusinessLogic.getFacade().getUserEmail());
 
         searchResultListContainer = findViewById(R.id.list_container);
         tileContainer = findViewById(R.id.tile_container);

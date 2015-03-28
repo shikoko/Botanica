@@ -47,11 +47,11 @@ public class LoginActivity extends BotanicaActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null) {
                     if (event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.KEYCODE_ENTER) {
-                        advance();
+                        assertLogin();
                         return false;
                     }
                 } else if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    advance();
+                    assertLogin();
                     return false;
                 }
                 return true;
@@ -67,6 +67,10 @@ public class LoginActivity extends BotanicaActivity {
     @SuppressWarnings("UnusedDeclaration")
     @AttachClick(R.id.login_button)
     public void handleOnClick() {
+        assertLogin();
+    }
+
+    private void assertLogin() {
         if (ValidationUtils.isValidEmailAdress(emailEditView.getText().toString())) {
             BusinessLogic.getFacade().setUserEmail(emailEditView.getText().toString());
             advance();
