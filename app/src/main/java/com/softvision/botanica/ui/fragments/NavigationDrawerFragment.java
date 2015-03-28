@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.softvision.botanica.R;
+import com.softvision.botanica.adapters.NavigationAdapter;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -52,6 +53,8 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private NavigationAdapter navigationAdapter;
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
@@ -77,6 +80,8 @@ public class NavigationDrawerFragment extends Fragment {
             mFromSavedInstanceState = true;
         }
 
+        navigationAdapter = new NavigationAdapter(getActivity().getApplicationContext());
+
         // Select either the default item (0) or the last selected item.
         selectItem(mCurrentSelectedPosition);
     }
@@ -101,14 +106,15 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.search_section),
-                        getString(R.string.add_section),
-                }));
+//        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+//                getActionBar().getThemedContext(),
+//                android.R.layout.simple_list_item_activated_1,
+//                android.R.id.text1,
+//                new String[]{
+//                        getString(R.string.search_section),
+//                        getString(R.string.add_section),
+//                }));
+        mDrawerListView.setAdapter(navigationAdapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return view;
     }

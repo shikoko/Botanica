@@ -1,6 +1,7 @@
 package com.softvision.botanica.ui.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,13 +12,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.softvision.botanica.R;
 import com.softvision.botanica.ui.BotanicaActivity;
 import com.softvision.botanica.ui.fragments.NavigationDrawerFragment;
 
 public class MainActivity extends BotanicaActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, View.OnClickListener {
+
+    private Button button;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -42,6 +46,15 @@ public class MainActivity extends BotanicaActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        button = (Button) findViewById(R.id.button_main);
+        button.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, PlantActivity.class);
+        startActivity(intent);
     }
 
     @Override

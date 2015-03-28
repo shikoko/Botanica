@@ -1,4 +1,4 @@
-package com.softvision.botanica.ui;
+package com.softvision.botanica.ui.views.custom;
 
 import android.content.Context;
 import android.content.res.TypedArray;
