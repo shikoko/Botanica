@@ -1,5 +1,9 @@
 package com.softvision.botanica.ui.views.custom;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +18,7 @@ import android.widget.RelativeLayout;
 
 import com.softvision.botanica.BotanicaApplication;
 import com.softvision.botanica.R;
+import com.softvision.botanica.ui.utils.AnimationUtils;
 import com.softvision.botanica.ui.utils.FlipAnimator;
 
 import java.io.IOException;
@@ -24,6 +29,8 @@ import java.net.URL;
  * Created by lorand.krucz on 3/28/2015.
  */
 public class TileImageView extends RelativeLayout {
+    private static final long ANIMATION_DURATION = 500;
+
     private static ImageLoaderThread imageLoaderThread;
     private ImageView imageView;
     private View progressBarContainer;
@@ -44,7 +51,7 @@ public class TileImageView extends RelativeLayout {
     }
 
     private void init(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.image_tile_view, this, false);
+        LayoutInflater.from(context).inflate(R.layout.image_tile_view, this, true);
 
         imageView = (ImageView) findViewById(R.id.image_view);
         progressBarContainer = findViewById(R.id.progress_bar_container);
@@ -82,9 +89,16 @@ public class TileImageView extends RelativeLayout {
         });
     }
 
-    private void setBitmap(Bitmap bmp) {
-        imageView.setImageBitmap(bmp);
-        new FlipAnimator(progressBarContainer, imageView, progressBarContainer.getWidth() / 2, progressBarContainer.getHeight() / 2);
+    private void setBitmap(final Bitmap bmp) {
+        AnimationUtils.create().rotateY(this, ANIMATION_DURATION, 0, 90).after(new Runnable() {
+            @Override
+            public void run() {
+                imageView.setImageBitmap(bmp);
+                imageView.setVisibility(VISIBLE);
+                progressBarContainer.setVisibility(GONE);
+                AnimationUtils.create().rotateY(TileImageView.this, ANIMATION_DURATION, 270, 360).start();
+            }
+        }).start();
     }
 
     private static class ImageLoaderThread extends Thread {

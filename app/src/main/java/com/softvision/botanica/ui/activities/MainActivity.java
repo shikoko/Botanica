@@ -63,7 +63,7 @@ public class MainActivity extends BotanicaActivity
         button.setOnClickListener(this);
 
         flipImg = (TileImageView) findViewById(R.id.flip_img);
-        flipImg.setUrl("http://upload.wikimedia.org/wikipedia/commons/b/bf/GOES-13_First_Image_jun_22_2006_1730Z.jpg");
+        flipImg.setUrl("http://www.online-image-editor.com//styles/2014/images/example_image.png");
     }
 
     @Override
