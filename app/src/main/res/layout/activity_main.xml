@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <View
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
     <!-- As the main content view, the view below consumes the entire
          space available using match_parent in both dimensions. -->
     <FrameLayout

@@ -74,21 +74,38 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
     private void setUpMap(Bundle savedInstanceState) {
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-        MapView mapView1 = (MapView) findViewById(R.id.map);
-        map = mapView1.getMap();
+        map = mapView.getMap();
         if (map != null) {
             map.setMyLocationEnabled(true);
             map.setLocationSource(this);
         }
 
-        mapView1.setOnTouchListener(new View.OnTouchListener() {
+        mapView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                // Disallow the touch request for parent scroll on touch of  child view
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                return false;
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        mapView.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        mapView.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle MapView's touch events.
+                return true;
             }
         });
+
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override
@@ -127,6 +144,7 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
         if (myLocation == null) {
             myLocation = GeoLocationUtils.getInstance().getLastKnownLocation();
         }
+        map.addMarker(new MarkerOptions().position(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
         if (myLocation != null) {
             Double distance = 0d;
             for (PlantLocationPOJO location : locations) {
