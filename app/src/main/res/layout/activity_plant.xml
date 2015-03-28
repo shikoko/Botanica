@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <ScrollView
+        android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -13,14 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/map_layout"
-                android:orientation="vertical"
-                android:background="@android:color/darker_gray"
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
-
-            </LinearLayout>
+                android:layout_height="200dp" />
 
             <RelativeLayout
                 android:id="@+id/information_wrapper"
@@ -30,28 +27,45 @@
 
                 <TextView
                     android:id="@+id/plant_name"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="24dp"
-                    android:background="@android:color/holo_blue_bright"
+                    android:textSize="24sp"
+                    android:textStyle="bold|italic"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.softvision.botanica.ui.views.custom.TileImageView
+                    android:id="@+id/plant_image"
+                    android:layout_below="@id/plant_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="150dp"
+                    android:layout_height="200dp" />
+
+                <TextView
+                    android:id="@+id/plant_description_title"
+                    android:text="@string/description"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    android:layout_marginLeft="12dp"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="24dp"
+                    android:layout_below="@id/plant_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/plant_description"
-                    android:background="@android:color/holo_green_dark"
-                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="12dp"
                     android:layout_marginLeft="12dp"
-                    android:layout_toLeftOf="@+id/plant_image"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="12dp"
+                    android:layout_below="@id/plant_description_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
-                <ImageView
-                    android:id="@id/plant_image"
-                    android:background="@android:color/holo_red_dark"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="12dp"
-                    android:layout_width="150dp"
-                    android:layout_height="250dp" />
 
             </RelativeLayout>
 
