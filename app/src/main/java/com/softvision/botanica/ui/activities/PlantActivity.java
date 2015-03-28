@@ -117,9 +117,9 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
         }
     }
 
-    private void addCircle() {
+    private void addCircle(PlantLocationPOJO location) {
         map.addCircle(new CircleOptions().center(
-                new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).radius(100).strokeColor(GEOFENCE_GREEN_MARGIN).fillColor(GEOFENCE_GREEN)
+                new LatLng(location.getLat(), location.getLng())).radius(100).strokeColor(GEOFENCE_GREEN_MARGIN).fillColor(GEOFENCE_GREEN)
                 .strokeWidth(2).zIndex(1));
     }
 
@@ -133,13 +133,13 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
                 map.addMarker(new MarkerOptions().position(new LatLng(location.getLat(), location.getLng())));
 
                 // we have only 1 location that's why is this in the for loop
-                GeoLocationUtils.centerCamera(map, myLocation.getLatitude(), myLocation.getLongitude(), location.getLat(), location.getLng(), 24);
+                GeoLocationUtils.centerCamera(map, myLocation.getLatitude(), myLocation.getLongitude(), location.getLat(), location.getLng());
+                addCircle(location);
                 Double newDistance = GeoLocationUtils.calculateDistance(myLocation, location.getLat(), location.getLng(), true);
                 if (newDistance > distance) {
                     distance = newDistance;
                 }
             }
-            addCircle();
         }
     }
 

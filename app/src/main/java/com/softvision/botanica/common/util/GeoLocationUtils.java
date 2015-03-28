@@ -18,7 +18,7 @@ import com.softvision.botanica.ui.utils.UiUtils;
 public class GeoLocationUtils implements LocationListener {
     private static final long LOCATION_REFRESH_TIME = 2000;
     private static final float LOCATION_REFRESH_DISTANCE = 10;
-    private static int DEFAULT_PADDING = 40;
+    private static int DEFAULT_PADDING = 80;
     private static final Double MILES_IN_ONE_METER = 0.000621371192;
 
     private static GeoLocationUtils instance;
