@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Handler;
 
 import com.softvision.botanica.bl.BusinessLogic;
+import com.softvision.botanica.common.util.GeoLocationUtils;
 
 public class BotanicaApplication extends Application {
     private static Context appContext;
@@ -23,6 +24,7 @@ public class BotanicaApplication extends Application {
         super.onCreate();
         appContext = this;
         mainHandler = new Handler();
+        GeoLocationUtils.lazyInitializeSingleton(appContext);
         BusinessLogic.getFacade().setContext(appContext);
     }
 }

@@ -1,6 +1,7 @@
 package com.softvision.botanica.bl;
 
 import android.content.Context;
+import android.location.Location;
 
 import com.softvision.botanica.bl.api.ApiManager;
 import com.softvision.botanica.bl.api.http.HttpApiCallSubject;
@@ -9,7 +10,10 @@ import com.softvision.botanica.common.err.ApiException;
 import com.softvision.botanica.common.log.Log;
 import com.softvision.botanica.common.pojo.constants.ErrorCode;
 import com.softvision.botanica.common.pojo.in.InfoInputPOJO;
+import com.softvision.botanica.common.pojo.in.QueryInputPOJO;
 import com.softvision.botanica.common.pojo.out.InfoOutputPOJO;
+import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
+import com.softvision.botanica.common.util.GeoLocationUtils;
 import com.softvision.botanica.common.util.NetworkConnectivity;
 
 
@@ -64,6 +68,17 @@ public class BusinessLogic implements BlFacade {
         InfoInputPOJO infoInputPOJO = new InfoInputPOJO(queryString);
         return ApiManager.getInstance().info(infoInputPOJO);
 
+    }
+
+    public QueryOutputPOJO getPlantsList(String query, Integer limit) throws ApiException {
+        Log.i(TAG, "OP getPlantsList(" + query + ", " + limit + ")");
+        checkForNetwork();
+        Location location = GeoLocationUtils.getInstance().getLastKnownLocation();
+        if(location == null) {
+            throw new ApiException(ErrorCode.GEO_LOCATION_UNKNOWN);
+        }
+        QueryInputPOJO queryInputPOJO = new QueryInputPOJO(location.getLatitude(), location.getLongitude(), query, limit);
+        return ApiManager.getInstance().getPlantsList(queryInputPOJO);
     }
 
     //*****************************************************************************************MISCELLANEOUS STUFF

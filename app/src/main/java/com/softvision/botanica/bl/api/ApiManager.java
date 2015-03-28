@@ -14,7 +14,9 @@ import com.softvision.botanica.common.pojo.ApiReplyPOJO;
 import com.softvision.botanica.common.pojo.ApiRequestPOJO;
 import com.softvision.botanica.common.pojo.constants.ErrorCode;
 import com.softvision.botanica.common.pojo.in.InfoInputPOJO;
+import com.softvision.botanica.common.pojo.in.QueryInputPOJO;
 import com.softvision.botanica.common.pojo.out.InfoOutputPOJO;
+import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
 
 import java.lang.reflect.Type;
 
@@ -81,7 +83,7 @@ public class ApiManager {
 
         //make the call
         String responseString;
-        responseString = mApiCallSubject.getResponse(Settings.apiBaseUrl() + Settings.API_METHOD_SIGNON, toJson(requestPOJO));
+        responseString = mApiCallSubject.getResponse(Settings.apiBaseUrl() + Settings.API_METHOD_INFO, toJson(requestPOJO));
 
         //parse response
         Type responseType = new TypeToken<ApiReplyPOJO<InfoOutputPOJO>>() {
@@ -92,6 +94,32 @@ public class ApiManager {
         handleCommonApiReply(replyPOJO);
         return replyPOJO.getPayload();
     }
+
+    /**
+     * perform an info call through the UI
+     *
+     * @param queryInputPOJO the serializable input parameter of the sign in operation
+     * @throws ApiException in case of some IO or server side error
+     */
+    public QueryOutputPOJO getPlantsList(QueryInputPOJO queryInputPOJO) throws ApiException {
+        //create the request
+        ApiRequestPOJO requestPOJO = createFilledRequestWrapper(queryInputPOJO);
+
+        //make the call
+        String responseString;
+        responseString = mApiCallSubject.getResponse(Settings.apiBaseUrl() + Settings.API_METHOD_PLANTS, toJson(requestPOJO));
+
+        //parse response
+        Type responseType = new TypeToken<ApiReplyPOJO<QueryOutputPOJO>>() {
+        }.getType();
+        ApiReplyPOJO<QueryOutputPOJO> replyPOJO = fromJson(responseString, responseType);
+
+        //must call strip to retain SESSION ID
+        handleCommonApiReply(replyPOJO);
+        return replyPOJO.getPayload();
+    }
+
+
 
     //****************************************************************************************************** AUX METHODS
 

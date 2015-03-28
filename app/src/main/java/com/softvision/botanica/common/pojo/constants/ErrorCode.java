@@ -13,7 +13,7 @@ public enum ErrorCode {
     CONNECTION_TIMED_OUT(-3),           //if connection was lost after server call was initiated
 
     //below are API error codes
-    SUCCESS(0);
+    SUCCESS(0), GEO_LOCATION_UNKNOWN(1);
 
     private final Integer indicator;
 

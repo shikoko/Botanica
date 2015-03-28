@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.softvision.botanica.R;
+import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
 import com.softvision.botanica.ui.BotanicaActivity;
+import com.softvision.botanica.ui.async.QueryPlantsTask;
 import com.softvision.botanica.ui.fragments.NavigationDrawerFragment;
 
 public class MainActivity extends BotanicaActivity
@@ -46,6 +48,13 @@ public class MainActivity extends BotanicaActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        new QueryPlantsTask("" , 9) {
+            @Override
+            protected void onPostExecute(QueryOutputPOJO r) {
+                System.out.println(r);
+            }
+        }.execute();
 
         button = (Button) findViewById(R.id.button_main);
         button.setOnClickListener(this);
@@ -152,5 +161,4 @@ public class MainActivity extends BotanicaActivity
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
 }

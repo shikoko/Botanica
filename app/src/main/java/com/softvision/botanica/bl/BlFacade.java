@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.softvision.botanica.common.err.ApiException;
 import com.softvision.botanica.common.pojo.out.InfoOutputPOJO;
+import com.softvision.botanica.common.pojo.out.QueryOutputPOJO;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +25,7 @@ public interface BlFacade {
 
     //*****************************************************************************************API STUFF
     public InfoOutputPOJO info(String queryString) throws ApiException;
+    public QueryOutputPOJO getPlantsList(String query, Integer limit) throws ApiException;
 
     //*****************************************************************************************MISCELLANEOUS STUFF
 
