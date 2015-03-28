@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
     render json: { error: code }
   end
 
+  def payload
+    params![:payload]
+  end
+
   alias_method :params!, :json_post_params
 
   private

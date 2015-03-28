@@ -8,4 +8,9 @@ ThinkingSphinx::Index.define :plant, with: :active_record do
 
   # attributes
   has created_at, updated_at
+
+  has 'RADIANS(`locations`.`lat`)', as: :latitude, type: :float
+  has 'RADIANS(`locations`.`lng`)', as: :longitude, type: :float
+
+  join 'LEFT OUTER JOIN `locations` ON `locations`.`plant_id` = `plants`.`id`'
 end

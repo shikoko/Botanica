@@ -13,3 +13,5 @@
 /tmp
 
 /.idea
+/db/sphinx
+/config/*.sphinx.conf

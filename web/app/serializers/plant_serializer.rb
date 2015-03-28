@@ -1,4 +1,4 @@
 class PlantSerializer < ActiveModel::Serializer
-  attributes :name, :description, :picture
+  attributes :name, :bothanical, :uses, :parts, :description, :picture
   has_many :locations
 end

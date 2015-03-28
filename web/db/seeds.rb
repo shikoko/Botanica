@@ -29,7 +29,7 @@ CSV.foreach('db/db.csv', headers: :first_row) do |row|
 
   plant.save!
 
-  plant.locations.create!(lat: 47.659321 + Random.rand, lng: 23.57102851 + Random.rand, description: 'description')
+  plant.locations.create!(lat: 47.659321 + (Random.rand / 100.0), lng: 23.57102851 + (Random.rand / 100.0), description: 'description')
 end
 
 plants = Plant.limit(2)
