@@ -1,12 +1,11 @@
 package com.softvision.botanica.ui;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 
 import com.softvision.botanica.R;
 import com.softvision.botanica.bl.persist.PersistantUtils;
 import com.softvision.botanica.common.pojo.constants.ErrorCode;
-import com.softvision.botanica.ui.util.UiUtils;
+import com.softvision.botanica.ui.utils.UiUtils;
 
 public abstract class BotanicaActivity extends ActionBarActivity {
     private boolean mVisible = false;

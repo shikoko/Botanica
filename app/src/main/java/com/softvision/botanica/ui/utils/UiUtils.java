@@ -1,4 +1,4 @@
-package com.softvision.botanica.ui.util;
+package com.softvision.botanica.ui.utils;
 
 import android.app.FragmentManager;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import com.softvision.botanica.ui.BotanicaActivity;
-import com.softvision.botanica.ui.fragment.BotanicaAckDialogFragment;
+import com.softvision.botanica.ui.fragments.BotanicaAckDialogFragment;
 
 import java.io.File;
 

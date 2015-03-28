@@ -1,4 +1,4 @@
-package com.softvision.botanica.ui.fragment;
+package com.softvision.botanica.ui.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
