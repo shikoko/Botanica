@@ -2,4 +2,5 @@
 <resources>
     <color name="grey_light">#66000000</color>
     <color name="botanica_green">#186E49</color>
+    <color name="grey_dark">#555555</color>
 </resources>

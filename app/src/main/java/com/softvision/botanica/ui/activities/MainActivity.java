@@ -115,6 +115,11 @@ public class MainActivity extends BotanicaActivity
         for (TileImageView flipImg : flipImgs) {
             flipImg.setOnClickListener(this);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         new QueryPlantsTask("" , 60) {
             @Override
@@ -299,10 +304,12 @@ public class MainActivity extends BotanicaActivity
     }
 
     private class RandomPlantRunnable implements Runnable {
+        private int plantIndex = -1;
+
         @Override
         public void run() {
             if(!tilesHidden  &&isVisible() &&!isFinishing() && lastResult != null) {
-                int plantIndex = random.nextInt(lastResult.getPlants().size());
+                plantIndex = (plantIndex == -1)? flipImgs.size() + 1 : (plantIndex + 1) % lastResult.getPlants().size();
                 int viewIndex = random.nextInt(flipImgs.size());
                 flipImgs.get(viewIndex).setUrl(lastResult.getPlants().get(plantIndex).getPicture());
                 flipImgs.get(viewIndex).setTag(R.id.plant_object_tag_key, lastResult.getPlants().get(plantIndex));

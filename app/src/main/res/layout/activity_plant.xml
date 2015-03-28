@@ -25,25 +25,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/plant_name"
-                    android:textSize="24sp"
-                    android:textStyle="bold|italic"
+                <LinearLayout
+                    android:id="@+id/plant_image_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginTop="12dp"
-                    android:textColor="@android:color/black"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <com.softvision.botanica.ui.views.custom.TileImageView
-                    android:id="@+id/plant_image"
-                    android:layout_below="@id/plant_name"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="150dp"
-                    android:layout_height="200dp" />
+                    android:background="@color/grey_dark"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/plant_name"
+                        android:textSize="24sp"
+                        android:textStyle="bold|italic"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@android:color/white"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <com.softvision.botanica.ui.views.custom.TileImageView
+                        android:id="@+id/plant_image"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="150dp"
+                        android:layout_height="200dp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/plant_description_title"
@@ -53,7 +60,7 @@
                     android:layout_marginLeft="12dp"
                     android:textColor="@android:color/black"
                     android:layout_marginTop="24dp"
-                    android:layout_below="@id/plant_image"
+                    android:layout_below="@id/plant_image_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

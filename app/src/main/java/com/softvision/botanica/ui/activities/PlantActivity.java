@@ -74,7 +74,7 @@ public class PlantActivity extends BotanicaActivity implements LocationSource {
 
     private void populateUi() {
         plantImage.setUrl(plant.getPicture());
-        plantName.setText(plant.getName() + "(" + plant.getBothanicalName() + ")");
+        plantName.setText(plant.getName() + "\n (" + plant.getBothanicalName() + ")");
         splitDescription();
         splitParts();
         splitUses();
