@@ -21,6 +21,9 @@
         <activity
             android:name=".activities.PlantActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.MainActivity"
+            android:screenOrientation="portrait" />
     </application>
 
     <meta-data
